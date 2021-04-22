@@ -1,7 +1,7 @@
 const inputs = document.querySelectorAll(".filters label");
 
 inputs.forEach((input) => input.addEventListener("input", handleUpdate));
-
+reset();
 function handleUpdate() {
   let input = this.querySelector("input");
   this.querySelector("output").value = input.value;
@@ -105,6 +105,71 @@ function loadImage() {
   fileReader.readAsDataURL(file);
   fileInputBtn.value = "";
 }
+
+const canvas = document.querySelector("canvas");
+
+function drawImage() {
+  const canvasImg = new Image();
+  canvasImg.setAttribute("crossOrigin", "anonymous");
+  canvasImg.src = img.src;
+  canvasImg.onload = function () {
+    canvas.width = canvasImg.width;
+    canvas.height = canvasImg.height;
+    const ctx = canvas.getContext("2d");
+
+    let blur =
+      +document.documentElement.style
+        .getPropertyValue("--blur")
+        .split("px")[0] *
+        2 +
+      "px";
+
+    ctx.filter = `
+    blur(${blur})
+    invert(${document.documentElement.style.getPropertyValue("--invert")}) 
+    sepia(${document.documentElement.style.getPropertyValue("--sepia")}) 
+    saturate(${document.documentElement.style.getPropertyValue("--saturate")})
+    hue-rotate(${document.documentElement.style.getPropertyValue("--hue")})
+    `;
+    console.log(ctx.filter);
+    ctx.drawImage(img, 0, 0);
+  };
+}
+
+const saveBtn = document.querySelector(".btn-save");
+
+saveBtn.addEventListener("click", function (e) {
+  const canvasImg = new Image();
+  canvasImg.setAttribute("crossOrigin", "anonymous");
+  canvasImg.src = img.src;
+  canvasImg.onload = function () {
+    canvas.width = canvasImg.width;
+    canvas.height = canvasImg.height;
+    const ctx = canvas.getContext("2d");
+
+    let blur =
+      +document.documentElement.style
+        .getPropertyValue("--blur")
+        .split("px")[0] *
+        2 +
+      "px";
+
+    ctx.filter = `
+    blur(${blur})
+    invert(${document.documentElement.style.getPropertyValue("--invert")}) 
+    sepia(${document.documentElement.style.getPropertyValue("--sepia")}) 
+    saturate(${document.documentElement.style.getPropertyValue("--saturate")})
+    hue-rotate(${document.documentElement.style.getPropertyValue("--hue")})
+    `;
+    console.log(ctx.filter);
+    ctx.drawImage(img, 0, 0);
+    var link = document.createElement("a");
+    link.download = "download.png";
+    link.href = canvas.toDataURL("image/jpeg");
+    link.click();
+    link.delete;
+  };
+});
 
 let fullScreen = document.querySelector(".fullscreen");
 fullScreen.addEventListener("click", () => {
