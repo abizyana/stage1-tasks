@@ -36,8 +36,7 @@ function reset() {
   document.documentElement.style.setProperty("--hue", "0deg");
 }
 
-const baseUrl =
-  "https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/day/";
+let baseUrl = `https://raw.githubusercontent.com/rolling-scopes-school/stage1-tasks/assets/images/${checkDayTime()}/`;
 const images = [
   "01.jpg",
   "02.jpg",
@@ -74,6 +73,22 @@ function nextImage() {
     img.setAttribute("src", baseUrl + images[index]);
   };
   i++;
+}
+
+function checkDayTime() {
+  let currentDate = new Date();
+  let dayTime = "day";
+  if (currentDate.getHours() >= 6 && currentDate.getHours() < 12) {
+    dayTime = "morning";
+  } else if (currentDate.getHours() >= 12 && currentDate.getHours() < 18) {
+    dayTime = "day";
+  } else if (currentDate.getHours() >= 18 && currentDate.getHours() < 24) {
+    dayTime = "evening";
+  } else if (currentDate.getHours() >= 0 && currentDate.getHours() < 6) {
+    dayTime = "night";
+  }
+
+  return dayTime;
 }
 
 let fullScreen = document.querySelector(".fullscreen");
