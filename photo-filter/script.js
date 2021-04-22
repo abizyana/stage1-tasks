@@ -91,6 +91,21 @@ function checkDayTime() {
   return dayTime;
 }
 
+const fileInputBtn = document.querySelector(".btn-load--input");
+fileInputBtn.addEventListener("change", loadImage);
+
+function loadImage() {
+  const file = fileInputBtn.files[0];
+  const fileReader = new FileReader();
+  fileReader.onload = () => {
+    const loadedImage = new Image();
+    loadedImage.src = fileReader.result;
+    img.setAttribute("src", fileReader.result);
+  };
+  fileReader.readAsDataURL(file);
+  fileInputBtn.value = "";
+}
+
 let fullScreen = document.querySelector(".fullscreen");
 fullScreen.addEventListener("click", () => {
   if (!document.fullscreenElement) {
